@@ -1,3 +1,5 @@
+const taskStats = document.querySelector("#taskStats");
+
 const input = document.querySelector("#taskInput");
 
 const button = document.querySelector("#addBtn");
@@ -29,15 +31,38 @@ button.addEventListener("click", function () {
     input.value = "";
 
 });
+
+
+
 function saveTasks() {
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
 }
+
+
+
+
 function renderTasks() {
     console.log(tasks);
 
     taskList.innerHTML = "";
+
+    const completedTasks = tasks.filter(function (task) {
+
+        return task.completed;
+
+    });
+
+    const completedCount = completedTasks.length;
+
+    const totalCount = tasks.length;
+
+    const percentage = totalCount === 0
+        ? 0
+        : Math.round((completedCount / totalCount) * 100);
+
+    taskStats.textContent = `Completed ${completedCount} / ${totalCount} tasks (${percentage}%)`;
 
     for (let task of tasks) {
 
