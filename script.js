@@ -5,8 +5,11 @@ const button = document.querySelector("#addBtn");
 const taskList = document.querySelector("#taskList");
 
 
-const tasks = [];
+const savedTasks = localStorage.getItem("tasks");
 
+const tasks = savedTasks ? JSON.parse(savedTasks) : [];
+
+renderTasks();
 
 button.addEventListener("click", function () {
 
@@ -20,11 +23,17 @@ button.addEventListener("click", function () {
         text: taskText,
         completed: false
     });
+    saveTasks();
 
     renderTasks();
-input.value = "";
+    input.value = "";
 
 });
+function saveTasks() {
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+}
 function renderTasks() {
     console.log(tasks);
 
@@ -38,43 +47,45 @@ function renderTasks() {
 
         const deleteBtn = document.createElement("button");
 
-deleteBtn.textContent = "Delete";
+        deleteBtn.textContent = "Delete";
 
 
-deleteBtn.addEventListener("click", function () {
+        deleteBtn.addEventListener("click", function () {
 
-    const filteredTasks = tasks.filter(function (t) {
+            const filteredTasks = tasks.filter(function (t) {
 
-        return t.id !== task.id;
+                return t.id !== task.id;
+                saveTasks();
 
-    });
+            });
 
-    tasks.length = 0;
+            tasks.length = 0;
 
-    tasks.push(...filteredTasks);
+            tasks.push(...filteredTasks);
+            saveTasks();
 
-    renderTasks();
+            renderTasks();
 
-});
+        });
 
 
 
 
         if (task.completed) {
-    li.style.textDecoration = "line-through";
-}
+            li.style.textDecoration = "line-through";
+        }
 
 
-li.appendChild(deleteBtn);
+        li.appendChild(deleteBtn);
         taskList.appendChild(li);
 
         li.addEventListener("click", function () {
 
-    task.completed = !task.completed;
+            task.completed = !task.completed;
 
-    renderTasks();
+            renderTasks();
 
-});
+        });
 
     }
 
