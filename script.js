@@ -6,6 +6,8 @@ const button = document.querySelector("#addBtn");
 
 const taskList = document.querySelector("#taskList");
 
+const prioritySelect = document.querySelector("#prioritySelect");
+
 const allBtn = document.querySelector("#allBtn");
 
 const completedBtn = document.querySelector("#completedBtn");
@@ -26,6 +28,7 @@ renderTasks();
 button.addEventListener("click", function () {
 
     const taskText = input.value.trim();
+    const priority = Number(prioritySelect.value);
 
     if (taskText === "") {
         return;
@@ -33,7 +36,8 @@ button.addEventListener("click", function () {
     tasks.push({
         id: Date.now(),
         text: taskText,
-        completed: false
+        completed: false,
+        priority: priority
     });
     saveTasks();
 
@@ -89,7 +93,7 @@ function renderTasks() {
         return task.completed;
 
     });
-
+    //for task completeion %age 
     const completedCount = completedTasks.length;
 
     const totalCount = tasks.length;
@@ -98,7 +102,23 @@ function renderTasks() {
         ? 0
         : Math.round((completedCount / totalCount) * 100);
 
-    taskStats.textContent = `Completed ${completedCount} / ${totalCount} tasks (${percentage}%)`;
+    //for productivity score
+    let completedWeight = 0;
+
+    let totalWeight = 0;
+
+    for(let task of tasks){
+        totalWeight+=task.priority;
+        if(task.completed){
+            completedWeight+=task.priority;
+        }
+    }
+
+    const productivityScore = totalWeight === 0
+    ? 0
+    : Math.round((completedWeight / totalWeight) * 100);
+
+    taskStats.textContent = `Completed ${completedCount} / ${totalCount} tasks (${percentage}%)   ||  Productivity Score : ${productivityScore}`;
 
     let filteredTasks = tasks;
 
@@ -126,7 +146,7 @@ function renderTasks() {
 
         const li = document.createElement("li");
 
-        li.textContent = task.text;
+        li.textContent =`${task.text} (Priority: ${task.priority})`;;
 
         const deleteBtn = document.createElement("button");
 
