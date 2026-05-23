@@ -6,16 +6,26 @@ const button = document.querySelector("#addBtn");
 
 const taskList = document.querySelector("#taskList");
 
+const allBtn = document.querySelector("#allBtn");
+
+const completedBtn = document.querySelector("#completedBtn");
+
+const pendingBtn = document.querySelector("#pendingBtn");
 
 const savedTasks = localStorage.getItem("tasks");
 
 const tasks = savedTasks ? JSON.parse(savedTasks) : [];
 
+let currentFilter = "all";
+
 renderTasks();
 
+//BUTTONS EVENT TRIGGER
+
+//Add task button
 button.addEventListener("click", function () {
 
-    const taskText = input.value;
+    const taskText = input.value.trim();
 
     if (taskText === "") {
         return;
@@ -33,14 +43,40 @@ button.addEventListener("click", function () {
 });
 
 
+//Filtering buttons
+
+allBtn.addEventListener("click", function () {
+
+    currentFilter = "all";
+
+    renderTasks();
+
+});
+
+completedBtn.addEventListener("click", function () {
+
+    currentFilter = "completed";
+
+    renderTasks();
+
+});
+
+pendingBtn.addEventListener("click", function () {
+
+    currentFilter = "pending";
+
+    renderTasks();
+
+});
+
+
+//FUNCTIONS BELOW
 
 function saveTasks() {
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
 }
-
-
 
 
 function renderTasks() {
@@ -64,7 +100,29 @@ function renderTasks() {
 
     taskStats.textContent = `Completed ${completedCount} / ${totalCount} tasks (${percentage}%)`;
 
-    for (let task of tasks) {
+    let filteredTasks = tasks;
+
+    if (currentFilter === "completed") {
+
+    filteredTasks = tasks.filter(function (task) {
+
+        return task.completed;
+
+    });
+
+    }
+    if (currentFilter === "pending") {
+
+    filteredTasks = tasks.filter(function (task) {
+
+        return !task.completed;
+
+    });
+
+    }
+
+
+    for (let task of filteredTasks) {
 
         const li = document.createElement("li");
 
@@ -75,28 +133,27 @@ function renderTasks() {
         deleteBtn.textContent = "Delete";
 
 
-        deleteBtn.addEventListener("click", function () {
+        deleteBtn.addEventListener("click", function (event) {
+            event.stopPropagation();
 
-            const filteredTasks = tasks.filter(function (t) {
+            const updatedTasks = tasks.filter(function (t) {
 
                 return t.id !== task.id;
-                saveTasks();
+                
 
             });
 
             tasks.length = 0;
 
-            tasks.push(...filteredTasks);
+            tasks.push(...updatedTasks);
             saveTasks();
 
             renderTasks();
 
         });
 
-
-
-
         if (task.completed) {
+            li.style.color="green";
             li.style.textDecoration = "line-through";
         }
 
@@ -107,9 +164,9 @@ function renderTasks() {
         li.addEventListener("click", function () {
 
             task.completed = !task.completed;
-
+            saveTasks();
             renderTasks();
-
+            
         });
 
     }
