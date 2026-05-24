@@ -1,0 +1,124 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0d0d0d;
+    color: white;
+    min-height: 100vh;
+    padding: 40px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 4rem;
+    color: #00ffae;
+    letter-spacing: 3px;
+}
+
+input,
+select,
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    margin: 8px;
+    font-size: 1rem;
+}
+
+input {
+    width: 320px;
+    background: #1c1c1c;
+    color: white;
+    border: 1px solid #333;
+}
+
+select {
+    background: #1c1c1c;
+    color: white;
+    border: 1px solid #333;
+}
+
+button {
+    background: #00ffae;
+    color: black;
+    cursor: pointer;
+    transition: 0.2s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    transform: scale(1.05);
+    background: #00d392;
+}
+
+#taskStats {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    color: #d0d0d0;
+    white-space: pre-line;
+}
+
+#taskList {
+    list-style: none;
+    margin-top: 25px;
+}
+
+#taskList li {
+    background: #1b1b1b;
+    margin-bottom: 15px;
+    padding: 18px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.25s ease;
+}
+
+#taskList li:hover {
+    transform: translateX(6px);
+    background: #262626;
+}
+
+#taskList button {
+    background: #ff4d4d;
+    color: white;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+}
+
+#taskList button:hover {
+    background: #ff2222;
+}
+
+.completed-task {
+    background: rgba(0, 255, 174, 0.12) !important;
+    border-left: 5px solid #00ffae !important;
+    color: #d7ffe8;
+    position: relative;
+}
+
+.completed-task::before {
+    content: "✔";
+    color: #00ffae;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-right: 12px;
+}
+
+.low-priority {
+    border-left: 5px solid #00ffae;
+}
+
+.medium-priority {
+    border-left: 5px solid orange;
+}
+
+.high-priority {
+    border-left: 5px solid red;
+}
